@@ -4,17 +4,22 @@
   <meta charset="UTF-8">
   <title>Todos Preview</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 16px; }
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 16px; }
     h1 { font-size: 1.4rem; }
-    ul { list-style: none; padding: 0; }
-    li { padding: 10px; border-bottom: 1px solid #ddd; }
     #status { color: #888; }
+    table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    th, td { border: 1px solid #ddd; padding: 8px 12px; text-align: left; }
+    th { background: #f5f5f5; }
+    tr:nth-child(even) { background: #fafafa; }
   </style>
 </head>
 <body>
   <h1>Test Todos</h1>
   <p id="status">불러오는 중...</p>
-  <ul id="todo-list"></ul>
+  <table id="todo-table" hidden>
+    <thead><tr id="todo-header"></tr></thead>
+    <tbody id="todo-body"></tbody>
+  </table>
 
   <script>
     const SUPABASE_URL = "https://exqxvilvqkzydudwlgne.supabase.co/rest/v1/";
@@ -22,7 +27,9 @@
 
     async function loadTodos() {
       const statusEl = document.getElementById("status");
-      const listEl = document.getElementById("todo-list");
+      const tableEl = document.getElementById("todo-table");
+      const headerEl = document.getElementById("todo-header");
+      const bodyEl = document.getElementById("todo-body");
 
       try {
         const res = await fetch(SUPABASE_URL + "test_todos?select=*", {
@@ -43,10 +50,23 @@
           return;
         }
 
-        statusEl.remove();
-        listEl.innerHTML = todos
-          .map((todo) => `<li>${JSON.stringify(todo)}</li>`)
+        const columns = Object.keys(todos[0]);
+
+        headerEl.innerHTML = columns
+          .map((col) => `<th>${col}</th>`)
           .join("");
+
+        bodyEl.innerHTML = todos
+          .map((todo) => {
+            const cells = columns
+              .map((col) => `<td>${todo[col] ?? ""}</td>`)
+              .join("");
+            return `<tr>${cells}</tr>`;
+          })
+          .join("");
+
+        statusEl.remove();
+        tableEl.hidden = false;
       } catch (err) {
         statusEl.textContent = "불러오기 실패: " + err.message;
       }
