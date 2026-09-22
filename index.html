@@ -2,12 +2,28 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>3일차 연습</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <p>3일차 연습</p>
-  <a href="about.html">About 페이지로 이동</a>
-  <br>
-  <a href="preview.html">Todos Preview 페이지로 이동</a>
+  <main class="page">
+    <header class="site-header">
+      <span class="eyebrow">Day 03</span>
+      <h1>3일차 연습</h1>
+      <p class="lead">오늘 만든 페이지들을 한 곳에서 확인해보세요.</p>
+    </header>
+
+    <nav class="nav-grid">
+      <a class="nav-card" href="about.html">
+        <div class="title">About</div>
+        <div class="desc">소개 페이지로 이동합니다.</div>
+      </a>
+      <a class="nav-card" href="preview.html">
+        <div class="title">Todos Preview</div>
+        <div class="desc">Supabase 데이터를 테이블로 확인합니다.</div>
+      </a>
+    </nav>
+  </main>
 </body>
 </html>
